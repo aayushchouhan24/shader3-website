@@ -23,7 +23,7 @@ function shader3Material(uniforms) {
     uniform float audioLevel;
     uniform float time;
     varying float height;
-
+    
     void main() {
         float noiseFactor = perlin(s3_position  * 0.2) * 0.5;
         height = mix(noiseFactor * 2.0, perlin(s3_position + time) * audioLevel * 5.0, audioLevel);
@@ -39,12 +39,12 @@ function shader3Material(uniforms) {
         gl_FragColor.rgb = gl_FragColor.rgb+audioLevel/2.;
     }`
 
-    return new Shader3.MatcapShaderMaterial({ matcap: textureLoader.load("/assets/matcap3.png"), uniforms, vertexShader, fragmentShader, })
+    return new Shader3.MeshMatcapMaterial({ matcap: textureLoader.load("/assets/matcap3.png"), uniforms, vertexShader, fragmentShader, })
 }
 
 function createMesh(scene, material, uniforms, textureLoader) {
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), material)
-    mesh.customDepthMaterial = new Shader3.DepthShaderMaterial({ depthPacking: THREE.RGBADepthPacking, uniforms, vertexShader: material.vertexShader, })
+    mesh.customDepthMaterial = new Shader3.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, uniforms, vertexShader: material.vertexShader, })
     mesh.castShadow = true
 
     const texture = textureLoader.load("/assets/stars.jpg")
